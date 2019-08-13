@@ -7,5 +7,5 @@
 </div>
 
 
-[Documento de Visão](http://bit.ly/documentoDeVisao)
-
+* [Documento de Visão](http://bit.ly/documentoDeVisao)
+* [Live Demo](https://acg-api.herokuapp.com/)
