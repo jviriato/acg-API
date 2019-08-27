@@ -1,0 +1,23 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Acg extends Model
+{
+    public $table = "acg";  
+
+    public $fillable = ['id', 'id_aluno', 'id_categoria', 'horas_requisitadas', 
+    'horas_efetivadas', 'local_atividade', 'data_iniciatul', 'data_final', 'status'];
+
+    public function aluno()
+    {
+        return $this->hasOne('App\Models\Aluno', 'id', 'id_aluno');
+    }
+    
+    public function categoria()
+    {
+        return $this->hasOne('App\Models\CategoriaAcg', 'id', 'id_categoria');
+    }
+}
