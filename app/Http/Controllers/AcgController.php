@@ -68,6 +68,7 @@ class AcgController extends Controller
                 } else {
                     $horasEfetivadasCategoria[$acg->categoria->tipo]['efetivadas'] = $acg->horas_efetivadas;
                     $horasEfetivadasCategoria[$acg->categoria->tipo]['requisitadas'] = $acg->horas_requisitadas;
+                    $horasEfetivadasCategoria[$acg->categoria->tipo]['limite'] = $acg->categoria->qtd_horas_maximas;
                 }
                 $total += $acg->horas_efetivadas;
             }
