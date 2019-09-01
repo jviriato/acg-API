@@ -17,7 +17,10 @@ Route::get('/cursos', 'CursoController@index');
 Route::get('/alunos', 'AlunoController@index');
 Route::get('/categorias', 'CategoriaAcgController@index');
 Route::get('/acgs', 'AcgController@index');
+Route::get('/acgs-aluno/{matricula}', 'AcgController@porAluno');
+Route::get('/acgs-horas/{matricula}', 'AcgController@totalHorasAluno');
 Route::post('/acgs', 'AcgController@store');
+Route::post('/acgs-atualizar-status', 'AcgController@alterarStatus');
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
