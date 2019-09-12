@@ -12,6 +12,7 @@ class CategoriaACGTableSeeder extends Seeder
      */
     public function run()
     {
+        $now = date('Y-m-d H:i:s');
         $categorias = [
             ['Participação em eventos', 75],
             ['Atuação em núcleo temático', 75],
@@ -30,7 +31,8 @@ class CategoriaACGTableSeeder extends Seeder
                 'id_curso' => 1,
                 'tipo' => $categoria[0],
                 'qtd_horas_maximas' => $categoria[1],
-    
+                'created_at' => $now,
+                'updated_at' => $now
             ]);   
         }
     }

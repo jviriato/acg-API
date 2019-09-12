@@ -13,6 +13,7 @@ class AlunoTableSeeder extends Seeder
      */
     public function run()
     {
+        $now = date('Y-m-d H:i:s');
         $faker = Faker::create('pt_BR');
         foreach (range(1,10) as $index) {
 	        Aluno::insert([
@@ -20,8 +21,10 @@ class AlunoTableSeeder extends Seeder
                 'ativo' => $faker->numberBetween(0, 1),
                 'matricula' => $faker->numberBetween(200000000, 201999999),
                 'id_curso' => 1,
-	            'email' => $faker->email,
+                'email' => $faker->email,
+                'created_at' => $now,
+                'updated_at' => $now
 	        ]);
-	    }        
+	    } 
     }
 }
