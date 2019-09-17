@@ -9,7 +9,7 @@ class Acg extends Model
     public $table = "acg";  
 
     public $fillable = ['id', 'id_aluno', 'id_categoria', 'horas_requisitadas', 
-    'horas_efetivadas', 'local_atividade', 'data_iniciatul', 'data_final', 'status'];
+    'horas_efetivadas', 'local_atividade', 'data_inicial', 'data_final', 'status', 'descricao'];
 
     public function aluno()
     {
