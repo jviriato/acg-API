@@ -18,6 +18,7 @@ Route::get('/alunos', 'AlunoController@index');
 Route::get('/aluno/{matricula}', 'AlunoController@aluno');
 Route::get('/categorias', 'CategoriaAcgController@index');
 Route::get('/acgs', 'AcgController@index');
+Route::get('/acg-unica/{id}', 'AcgController@acgUnica');
 Route::get('/acgs-aluno/{matricula}', 'AcgController@porAluno');
 Route::get('/acgs-horas/{matricula}', 'AcgController@totalHorasAluno');
 Route::post('/acg', 'AcgController@store');
