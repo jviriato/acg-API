@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\URL;
 use Illuminate\Http\Request;
-use App\Models\Acg;
+use App\Models\AcgAnexo;
 use App\Models\Aluno;
+use App\Models\Acg;
 
 class AcgController extends Controller
 {
@@ -13,6 +15,7 @@ class AcgController extends Controller
         try {
             $data = Acg::with('categoria')
                 ->with('aluno')
+                ->with('anexo')
                 ->get();
     
             return response()->json($data, 200);
@@ -35,11 +38,19 @@ class AcgController extends Controller
 
         $data = Acg::with('categoria')
             ->with('aluno')
+            ->with('anexo')
             ->where('id_aluno', $idAluno)
             ->get();
 
+        foreach ($data as $key => $item) {
+            if (sizeof($item->anexo)) {
+                foreach($item->anexo as $anexo_key => $anexo) {
+                    $data[$key]->anexo[$anexo_key]->local_do_anexo = $this->urlArquivo($anexo->local_do_anexo);
+                }
+            }
+        }
+        
         return $data;
-
     }
 
     public function porAluno($matricula)
@@ -51,6 +62,25 @@ class AcgController extends Controller
         } catch (\Throwable $th) {
             return response()->json(['message' => 'Erro ao obter acgs.'], 500);
         }
+    }
+
+    public function acgUnica($id)
+    {
+        $data = Acg::with('categoria')
+            ->with('aluno')
+            ->with('anexo')
+            ->where('id', $id)
+            ->first();
+
+        if (is_null($data)) {
+            return response()->json('Nenhuma acg com este id encontrado.', 200);
+        }
+
+        foreach ($data->anexo as $anexo_key => $anexo) {
+            $data->anexo[$anexo_key]->local_do_anexo = $this->urlArquivo($anexo->local_do_anexo);
+        }
+
+        return response()->json($data, 200);
     }
 
     public function totalHorasAluno($matricula)
@@ -78,11 +108,36 @@ class AcgController extends Controller
         }
     }
 
+    private function salvarAnexos($anexos, $id)
+    {
+        foreach ($anexos as $arquivo) {
+            $path = $arquivo->store('public');
+    
+            $fileReady = [
+                'id_acg' => $id,
+                'local_do_anexo' => $path,
+            ];
+    
+            AcgAnexo::create($fileReady);
+        }
+    }
+
     public function store(Request $request)
     {
-        $resposta = Acg::create($request->except('id'));
+        try {
+            $resposta = Acg::create($request->except(['id', 'files']));
+    
+            $idAcg = $resposta->id;
+            $files = $request->file('files', null);
 
-        return response()->json($resposta, 200);
+            if(!is_null($files)) {
+                $this->salvarAnexos($files, $idAcg);
+            }
+
+            return response()->json($resposta, 200);
+        } catch (\Throwable $th) {
+            return response()->json(['message' => 'Erro ao obter acgs.'], 500);
+        }
     }
 
     public function alterarStatus(Request $request)
@@ -94,5 +149,14 @@ class AcgController extends Controller
             ->update(['status' => $status]);
 
         return response()->json(['sucesso' => !!$success], 200);
+    }
+
+    private function urlArquivo($caminho)
+    {
+        $path = (explode('/', $caminho, 2))[1];
+
+        $path = URL::to('/') . '/storage/' . $path;
+
+        return $path;
     }
 }

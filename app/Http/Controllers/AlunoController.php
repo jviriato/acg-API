@@ -13,4 +13,11 @@ class AlunoController extends Controller
 
         return response()->json([$data], 200);
     }
+
+    public function aluno($matricula)
+    {
+        $data = Aluno::where('matricula', '=', $matricula)->with('curso')->first();
+
+        return response()->json($data, 200);
+    }
 }

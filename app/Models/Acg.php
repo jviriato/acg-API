@@ -6,10 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Acg extends Model
 {
-    public $table = "acg";  
+    public $table = 'acg';  
 
     public $fillable = ['id', 'id_aluno', 'id_categoria', 'horas_requisitadas', 
-    'horas_efetivadas', 'local_atividade', 'data_iniciatul', 'data_final', 'status'];
+    'horas_efetivadas', 'local_atividade', 'data_inicial', 'data_final', 'status', 'descricao'];
 
     public function aluno()
     {
@@ -19,5 +19,10 @@ class Acg extends Model
     public function categoria()
     {
         return $this->hasOne('App\Models\CategoriaAcg', 'id', 'id_categoria');
+    }
+
+    public function anexo()
+    {
+        return $this->hasMany('App\Models\AcgAnexo', 'id_acg', 'id');
     }
 }
