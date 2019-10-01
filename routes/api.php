@@ -24,6 +24,7 @@ Route::get('/acgs-horas/{matricula}', 'AcgController@totalHorasAluno');
 Route::post('/acg', 'AcgController@store');
 Route::post('/acg-atualizar-status', 'AcgController@alterarStatus');
 Route::get('/enviar-email', 'EmailController@enviarEmail');
+Route::get('/teste', 'LdapController@teste');
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
